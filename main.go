@@ -27,9 +27,8 @@ func main() {
 	user := router.Group("/api/user/")
 	{
 		user.POST("/register", userController.UserRegister)
-		user.POST("/login", func(c *gin.Context) {
-			c.JSON(200, gin.H{"ok": 1})
-		})
+		user.POST("/login", userController.UserLogin)
+		user.GET("/info", userController.UserInfo)
 	}
 
 	router.Run(":3000")
