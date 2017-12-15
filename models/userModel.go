@@ -6,9 +6,9 @@ type (
 	//UserModel describes a usermodel type
 	UserModel struct {
 		gorm.Model
-		Name     string `json:"name"`
-		Username string `json:"username"`
-		Password string `json:"password"`
+		Name     string `form:"name" json:"name"`
+		Username string `form:"username" json:"username"`
+		Password string `form:"password" json:"password"`
 	}
 
 	//TransformedUser represents a formatted user

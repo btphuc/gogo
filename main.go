@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/user/gogo/Controllers/todoController"
+	"github.com/user/gogo/Controllers/userController"
 	// models
 )
 
@@ -25,9 +26,7 @@ func main() {
 
 	user := router.Group("/api/user/")
 	{
-		user.POST("/register", func(c *gin.Context) {
-			c.JSON(200, gin.H{"ok": 1})
-		})
+		user.POST("/register", userController.UserRegister)
 		user.POST("/login", func(c *gin.Context) {
 			c.JSON(200, gin.H{"ok": 1})
 		})
