@@ -3,6 +3,8 @@ package userController
 import (
 	"net/http"
 
+	"github.com/user/gogo/models"
+
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
@@ -20,8 +22,28 @@ func UserInfo(c *gin.Context) {
 	}
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		return []byte("gogopowerrangers!!"), nil
+		return []byte("keysecret"), nil
 	})
 
-	c.JSON(http.StatusCreated, gin.H{"status": "ok", "token": token.Claims, "err": err})
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+
+		var user models.UserModel
+		var userID = claims["userID"]
+
+		db.First(&user, userID)
+		if user.ID == 0 {
+			c.JSON(http.StatusNotFound, gin.H{
+				"status":  http.StatusNotFound,
+				"message": "fail",
+			})
+			return
+		}
+		c.JSON(http.StatusCreated, gin.H{
+			"status": "ok",
+			"user":   user,
+		})
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "error": err})
+	}
+
 }

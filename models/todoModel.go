@@ -8,11 +8,13 @@ type (
 		gorm.Model
 		Title     string `form:"title" json:"title"`
 		Completed int    `form:"completed" json:"completed"`
+		UserID    int    `json:"userid"`
 	}
 	// TransformedTodo represents a formatted todo
 	TransformedTodo struct {
 		ID        uint   `json:"id"`
 		Title     string `json:"title"`
 		Completed bool   `json:"completed"`
+		UserID    int    `json:"userid"`
 	}
 )

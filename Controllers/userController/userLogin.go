@@ -38,17 +38,15 @@ func UserLogin(c *gin.Context) {
 	}
 
 	// fmt.Println(users[0])
-	tokenKey := []byte("gogopowerrangers!!")
+	tokenKey := []byte("keysecret")
 
 	type tokenClaim struct {
-		username string `json:"username"`
-		password string `json:"password"`
+		UserID uint `json:"userID"`
 		jwt.StandardClaims
 	}
 
 	claims := tokenClaim{
-		username,
-		password,
+		users[0].ID,
 		jwt.StandardClaims{
 			Issuer:    "tui ne",
 			ExpiresAt: time.Now().Unix() + 10,
@@ -63,5 +61,16 @@ func UserLogin(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "token": tokenString, "username": username, "password": password})
+	// type userFromToken struct {
+	// 	Username string `json:"username"`
+	// 	Password string `json:"password"`
+	// 	jwt.StandardClaims
+	// }
+
+	// sample token is expired.  override time so it parses as valid
+	// tokenDecoded, err := jwt.ParseWithClaims(tokenString, &userFromToken{}, func(token *jwt.Token) (interface{}, error) {
+	// 	return []byte("keysecret"), nil
+	// })
+
+	c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "token": tokenString})
 }
